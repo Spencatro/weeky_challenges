@@ -50,3 +50,7 @@ def test_s_and_t_similar_length_and_different_contents_not_enough_k():
 def test_s_and_t_same_length_but_different_contents_not_enough_k():
     assert not append_and_delete(3, "cant transform", "wont transform")
     assert not append_and_delete(10, "cant transform", "wont transform")
+
+
+if __name__ == "__main__":
+    pytest.main()
