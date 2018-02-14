@@ -3,7 +3,7 @@ import sys
 
 def append_and_delete(k, s, t):
     if s == t:
-        return True
+        return k % 2 == 0 or k - 2 * len(s) >= 0
     idx_last_same_char = 0
     max_len = max(len(s), len(t))
     for i in range(max_len):
@@ -14,7 +14,11 @@ def append_and_delete(k, s, t):
                 break
         except IndexError:
             break
-    return k - (max_len - idx_last_same_char) >= 0
+    distance_s = max(0, len(s) - idx_last_same_char)
+    distance_t = max(0, len(t) - idx_last_same_char)
+    remains = k - (distance_s + distance_t)
+    print(remains)
+    return remains >= 0 and (remains % 2 == 0 or remains - (2 * len(s) - 1) > 0)
 
 
 def _autocast(strings):
