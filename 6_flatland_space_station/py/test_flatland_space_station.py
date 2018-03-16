@@ -19,6 +19,7 @@ def test_max_d():
 
 def test_trivial_towns():
     assert flatland_space_stations(3, [0,1,2]) == 0
+    assert flatland_space_stations(1, [0]) == 0
     assert flatland_space_stations(5, [0,2]) == 2
 
 

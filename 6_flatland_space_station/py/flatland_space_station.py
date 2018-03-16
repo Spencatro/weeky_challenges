@@ -42,6 +42,10 @@ def flatland_space_stations_slow(map_size, city_indexes):
 
 # C * n + m => O(n), because m is strictly smaller than n
 def flatland_space_stations(map_size, station_indexes):
+
+    if len(station_indexes) == map_size:
+        return 0
+
     city_list = [{"station": False, "distance": -1} for i in range(map_size)]
     min_station_idx = -1
     max_station_idx = -1
