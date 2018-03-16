@@ -23,7 +23,7 @@ def max_distance_between_stations(s1, s2):
     return math.floor(diff / 2)
 
 
-def flatland_space_stations(map_size, city_indexes):
+def flatland_space_stations_slow(map_size, city_indexes):
     max_distance = 0
     city_indexes.sort()
     for i in range(len(city_indexes)):
@@ -38,6 +38,52 @@ def flatland_space_stations(map_size, city_indexes):
     if distace_last_city > max_distance:
         max_distance = distace_last_city
     return max_distance
+
+
+# C * n + m => O(n), because m is strictly smaller than n
+def flatland_space_stations(map_size, station_indexes):
+    city_list = [{"station": False, "distance": -1} for i in range(map_size)]
+    min_station_idx = -1
+    max_station_idx = -1
+    for station_idx in station_indexes:  # O(m), m is strictly less than n, O(<n)
+        city_list[station_idx]["station"] = True
+        if min_station_idx == -1 or station_idx < min_station_idx:
+            min_station_idx = station_idx
+        if max_station_idx == -1 or station_idx > max_station_idx:
+            max_station_idx = station_idx
+
+    # we now have a map, generated in O(n) + O(m < n) => O(n)
+    cur_dist = 1
+    for idx, city in enumerate(city_list[min_station_idx + 1:]):  # O(<n)
+        idx += min_station_idx
+        if city["station"]:
+            city["distance"] = cur_dist = 0
+        city["distance"] = cur_dist
+        cur_dist += 1
+
+    cur_dist = 1  # we will start one off the furthest station
+    for inverse_idx, city in enumerate(reversed(city_list[:max_station_idx])):  # O(2(<n))
+        if city["station"]:
+            city["distance"] = cur_dist = 0
+        if city["distance"] == -1 or city["distance"] > cur_dist:
+            city["distance"] = cur_dist
+        cur_dist += 1
+
+    cur_dist = 0
+    # have to clean up the tail ends
+    for city in city_list[min_station_idx:0:-1]:  # O(<n)
+        city["distance"] = cur_dist
+        cur_dist += 1
+
+    cur_dist = 0
+    for city in city_list[max_station_idx:]:  # O(<n)
+        city["distance"] = cur_dist
+        cur_dist += 1
+
+    max_dist = max(city_list, key=lambda x: x["distance"])["distance"]  # O(n)
+    # total time: O(<n) +  O(<n) +  O(<n) +  O(<n) +  O(2 * <n) + O(n)
+    # total O complexity: O(n)
+    return max_dist
 
 
 if __name__ == "__main__":
