@@ -69,19 +69,8 @@ def flatland_space_stations(map_size, station_indexes):
             city["distance"] = cur_dist
         cur_dist += 1
 
-    cur_dist = 0
-    # have to clean up the tail ends
-    for city in city_list[min_station_idx:0:-1]:  # O(<n)
-        city["distance"] = cur_dist
-        cur_dist += 1
-
-    cur_dist = 0
-    for city in city_list[max_station_idx:]:  # O(<n)
-        city["distance"] = cur_dist
-        cur_dist += 1
-
     max_dist = max(city_list, key=lambda x: x["distance"])["distance"]  # O(n)
-    # total time: O(<n) +  O(<n) +  O(<n) +  O(<n) +  O(2 * <n) + O(n)
+    # total time: O(<n) +  O(<n) +  O(<n) +  O(2 * <n)
     # total O complexity: O(n)
     return max_dist
 
