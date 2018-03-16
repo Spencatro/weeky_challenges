@@ -13,7 +13,7 @@ def test_bad_tree_1():
     880
                 879
             878
-                875  # wrong
+                875  # wrong, < 876
         876
                 875
             874
@@ -23,11 +23,19 @@ def test_bad_tree_1():
     assert not check_bst(tree)
 
 
-def test_bad_small_tree():
+def test_bad_small_trees():
     """
-       1
-    2
-       1
+            1 # wrong, > 2
+         2
+            1
+
+            7
+        6
+            5
+    3
+            4 # wrong, > 3
+        2
+            1
     """
     teeny_tree = build_tree("1 2 1")
     assert not check_bst(teeny_tree)

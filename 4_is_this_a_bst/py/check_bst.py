@@ -45,20 +45,20 @@ def build_tree(tree_string):
     return node
 
 
-def wrap(node, l_roots, r_roots):
+def wrap(node, min_node, max_node):
     valid = True
-    # print("left method {} must be less than all of {}".format(node.data, l_roots))
-    for root in l_roots:
-        valid = valid and node.data < root.data
-    # print("right method {} must be greater than all of {}".format(node.data, r_roots))
-    for root in r_roots:
-        valid = valid and node.data > root.data
+    if min_node is not None:
+        valid = valid and node.data < min_node
+        # print("left method {} must be less than all of {} {}".format(node.data, min_node, valid))
+    if max_node is not None:
+        valid = valid and node.data > max_node
+        # print("right method {} must be greater than all of {} {}".format(node.data, max_node, valid))
 
     if node.left:
         valid = valid and node.data > node.left.data
         # if not valid:
         #     print("not valid l1 {} {}".format(node.data, l_roots))
-        valid = valid and wrap(node.left, l_roots + [node], r_roots)
+        valid = valid and wrap(node.left, max(min_node, node.data), max_node)
         # if not valid:
         #     print("not valid l2 {} {}".format(node.data, l_roots))
 
@@ -68,12 +68,12 @@ def wrap(node, l_roots, r_roots):
         valid = valid and node.data < node.right.data
         # if not valid:
         #     print("not valid r1 {} {}".format(node.data, l_roots))
-        valid = valid and wrap(node.right, l_roots, r_roots + [node])
+        valid = valid and wrap(node.right, min_node, min(max_node, node.data) or node.data)  # min(None, 3) returns None
         # if not valid:
         #     print("not valid r2 {} {}".format(node.data, l_roots, r_roots))
     return valid
 
 
 def check_bst(root):
-    return wrap(root, [], [])
+    return wrap(root, None, None)
 
