@@ -58,7 +58,7 @@ def wrap(node, min_node, max_node):
         valid = valid and node.data > node.left.data
         # if not valid:
         #     print("not valid l1 {} {}".format(node.data, l_roots))
-        valid = valid and wrap(node.left, max(min_node, node.data), max_node)
+        valid = valid and wrap(node.left, max(min_node or node.data, node.data), max_node)
         # if not valid:
         #     print("not valid l2 {} {}".format(node.data, l_roots))
 
@@ -68,7 +68,7 @@ def wrap(node, min_node, max_node):
         valid = valid and node.data < node.right.data
         # if not valid:
         #     print("not valid r1 {} {}".format(node.data, l_roots))
-        valid = valid and wrap(node.right, min_node, min(max_node, node.data) or node.data)  # min(None, 3) returns None
+        valid = valid and wrap(node.right, min_node, min(max_node or node.data, node.data) or node.data)  # min(None, 3) returns None
         # if not valid:
         #     print("not valid r2 {} {}".format(node.data, l_roots, r_roots))
     return valid
